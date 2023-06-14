@@ -51,7 +51,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Log::info($validator->errors()->first());
+            // Log::info($validator->errors()->first());
             return $this->responseHelper->validataionFail($validator->errors()->first());
         }
 
@@ -61,6 +61,19 @@ class AuthController extends Controller
             return $this->responseHelper->response(true, Response::HTTP_UNAUTHORIZED, trans('messages.error.UNAUTHORIZED_ACCESS_ERROR'));
         }
         return $this->responseHelper->response(true, Response::HTTP_OK, trans('messages.sucess.USER_LOGIN_SUCCESSFULLY'),$this->respondWithToken($token));
+    }
+
+    public function forgotPassword(Request $request):JsonResponse{
+       $validator = Validator::make($request->all(),[
+        'email' => 'required|string|email'
+       ]);
+
+       if($validator->fails()){
+            return $this->responseHelper->validataionFail(($validator->errors()->first()));
+       }
+
+    $this->authService->forgotPassword($request->input('email'));
+
     }
 
     public function respondWithToken($token){

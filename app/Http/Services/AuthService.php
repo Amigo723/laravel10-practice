@@ -21,4 +21,8 @@ class AuthService
         $user = $this->authRepository->register($request);
         $user->assignRole($role);
     }
+
+    public function forgotPassword(){
+        
+    }
 }
